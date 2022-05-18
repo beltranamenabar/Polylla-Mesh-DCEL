@@ -27,7 +27,7 @@ class Polylla
 {
 private:
     typedef std::vector<int> _polygon; 
-    typedef std::vector<char> bit_vector; 
+    typedef std::vector<bool> bit_vector; 
 
 
     Triangulation *tr; // Halfedge triangulation
