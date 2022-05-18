@@ -13,17 +13,15 @@
 #include <iostream>
 #include <fstream>
 #include <cmath>
-#include <triangulation.hpp>
 #include <chrono>
 #include <iomanip>
 
+#include "polygon.hpp"
+#include "triangulation.hpp"
+
 #define print_e(eddddge) eddddge<<" ( "<<tr->origin(eddddge)<<" - "<<tr->target(eddddge)<<") "
 
-struct Polygon{
-    int seed_edge; //Edge that generate the polygon
-    std::vector<int> vertices; //Vertices of the polygon
-    //std::vector<int> neighbors; //Neighbors of the polygon WIP
-};
+
 
 class Polylla
 {
