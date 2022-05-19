@@ -1,6 +1,6 @@
 Language: Cpp
 BasedOnStyle: WebKit
-AccessModifierOffset: 4
+AccessModifierOffset: -4
 AlignAfterOpenBracket: BlockIndent
 AlignArrayOfStructures: None
 AlignConsecutiveAssignments: None
@@ -81,7 +81,8 @@ PenaltyBreakString: 256
 PenaltyBreakTemplateDeclaration: 256
 PenaltyExcessCharacter: 4
 PenaltyReturnTypeOnItsOwnLine: 2
-PointerAlignment: Left
+PointerAlignment: Right
+ReferenceAlignment: Right
 ReflowComments: false
 SortUsingDeclarations: true
 SpaceAfterCStyleCast: false
