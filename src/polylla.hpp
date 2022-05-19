@@ -23,9 +23,8 @@
 
 
 
-class Polylla
-{
-private:
+class Polylla {
+        private:
 
     using _polygon = std::vector<int>;
     using bit_vector = std::vector<bool>;
@@ -44,7 +43,7 @@ private:
     int n_frontier_edges = 0; //Number of frontier edges
     int n_barrier_edge_tips = 0; //Number of barrier edge tips
 
-public:
+        public:
 
     Polylla(){}; //Default constructor
 
@@ -72,7 +71,9 @@ public:
         construct_Polylla();
     }
 
-    ~Polylla() { delete tr; }
+    ~Polylla() {
+        delete tr;
+    }
 
     void construct_Polylla() {
         max_edges = bit_vector(tr->halfEdges(), false);
@@ -268,7 +269,7 @@ public:
     }
 
 
-private:
+        private:
 
     //Return true is the edge is terminal-edge or terminal border edge,
     //but it only selects one halfedge as terminal-edge, the halfedge with lowest index is selected

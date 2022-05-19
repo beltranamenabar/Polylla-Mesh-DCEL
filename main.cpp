@@ -1,17 +1,11 @@
 #include <algorithm>
-
 #include <fstream>
 #include <iostream>
-#include <polylla.hpp>
 #include <string>
 #include <vector>
 
+#include <polylla.hpp>
 #include <triangulation.hpp>
-
-//#include <compresshalfedge.hpp>
-//#include <io_void.hpp>
-//#include <delfin.hpp>
-//
 
 int main(int argc, char **argv) {
 
