@@ -1,6 +1,6 @@
 #pragma once
 
-struct halfEdge {
+struct HalfEdge {
     int origin; //tail of edge
     int target; //head of edge
     int twin; //opposite halfedge

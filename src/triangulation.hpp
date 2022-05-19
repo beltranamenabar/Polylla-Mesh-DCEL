@@ -58,8 +58,8 @@ private:
     int                        n_halfedges = 0; //number of halfedges
     int                        n_faces     = 0; //number of faces
     int                        n_vertices  = 0; //number of vertices
-    std::vector<vertex>        Vertices;
-    std::vector<halfEdge>      HalfEdges; //list of edges
+    std::vector<Vertex>        Vertices;
+    std::vector<HalfEdge>      HalfEdges; //list of edges
     //std::vector<char> triangle_flags; //list of edges that generate a unique triangles,
     std::vector<int>            triangle_list; //list of edges that generate a unique triangles,
     typedef std::pair<int, int> _edge;
@@ -78,7 +78,7 @@ private:
             std::getline(nodefile, line); //skip the first line
             while(std::getline(nodefile, line)) {
                 std::istringstream(line) >> a1 >> a2 >> a3 >> a4;
-                vertex ve;
+                Vertex ve;
                 ve.x         = a2;
                 ve.y         = a3;
                 ve.is_border = (a4 == 1) ? true : false;
@@ -145,7 +145,7 @@ private:
     //also associate each vertex with an incident halfedge
     void construct_interior_halfEdges_from_faces_and_neighs(std::vector<int> faces, std::vector<int> neighs) {
         for(std::size_t i = 0; i < n_faces; i++) {
-            halfEdge he0, he1, he2;
+            HalfEdge he0, he1, he2;
             int      index_he0 = i * 3 + 0;
             int      index_he1 = i * 3 + 1;
             int      index_he2 = i * 3 + 2;
@@ -227,7 +227,7 @@ private:
     void construct_exterior_halfEdges() {
         //search interior edges labed as border, generates exterior edges
         //with the origin and target inverted and add at the of HalfEdges vector
-        halfEdge he_aux;
+        HalfEdge he_aux;
         for(std::size_t i = 0; i < this->n_halfedges; i++)
             if(HalfEdges.at(i).is_border) {
                 he_aux.target             = HalfEdges.at(i).origin;
@@ -273,7 +273,7 @@ private:
         std::unordered_map<_edge, int, decltype(hash_for_pair)> map_edges(3 * this->n_faces,
                                                                           hash_for_pair); //set of edges to calculate the boundary and twin edges
         for(std::size_t i = 0; i < n_faces; i++) {
-            halfEdge he0, he1, he2;
+            HalfEdge he0, he1, he2;
             int      index_he0 = i * 3 + 0;
             int      index_he1 = i * 3 + 1;
             int      index_he2 = i * 3 + 2;
@@ -384,7 +384,7 @@ private:
                 if(tmp [0] != '#') //check if first element is a comentary
                 {
                     std::istringstream(line) >> a1 >> a2 >> a3;
-                    vertex ve;
+                    Vertex ve;
                     ve.x = a1;
                     ve.y = a2;
                     this->Vertices.push_back(ve);
@@ -457,7 +457,7 @@ public:
         file << n_vertices << "\n";
         file << n_halfedges << "\n";
         for(std::size_t i = 0; i < n_vertices; i++) {
-            vertex v        = Vertices.at(i);
+            Vertex v        = Vertices.at(i);
             int    incident = v.incident_halfedge;
             int    curr     = incident;
             int    twin     = HalfEdges.at(curr).twin;

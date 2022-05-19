@@ -1,6 +1,6 @@
 #pragma once
 
-struct vertex {
+struct Vertex {
     double x;
     double y;
     bool   is_border = false; // if the vertex is on the boundary
