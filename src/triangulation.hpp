@@ -55,20 +55,20 @@ class Triangulation
 private:
 
     typedef std::array<int, 3> _triangle;
-    int                        n_halfedges = 0; //number of halfedges
-    int                        n_faces     = 0; //number of faces
-    int                        n_vertices  = 0; //number of vertices
-    std::vector<Vertex>        Vertices;
-    std::vector<HalfEdge>      HalfEdges; //list of edges
+    int n_halfedges = 0; //number of halfedges
+    int n_faces = 0; //number of faces
+    int n_vertices = 0; //number of vertices
+    std::vector<Vertex> Vertices;
+    std::vector<HalfEdge> HalfEdges; //list of edges
     //std::vector<char> triangle_flags; //list of edges that generate a unique triangles,
-    std::vector<int>            triangle_list; //list of edges that generate a unique triangles,
+    std::vector<int> triangle_list; //list of edges that generate a unique triangles,
     typedef std::pair<int, int> _edge;
 
     //Read node file in .node format and nodes in point vector
     void read_nodes_from_file(std::string name) {
-        std::string   line;
+        std::string line;
         std::ifstream nodefile(name);
-        double        a1, a2, a3, a4;
+        double a1, a2, a3, a4;
 
         //std::cout<<"Node file"<<std::endl;
         if(nodefile.is_open()) {
@@ -79,8 +79,8 @@ private:
             while(std::getline(nodefile, line)) {
                 std::istringstream(line) >> a1 >> a2 >> a3 >> a4;
                 Vertex ve;
-                ve.x         = a2;
-                ve.y         = a3;
+                ve.x = a2;
+                ve.y = a3;
                 ve.is_border = (a4 == 1) ? true : false;
                 Vertices.push_back(ve);
             }
@@ -92,9 +92,9 @@ private:
     //Read triangle file in .ele format and stores it in faces vector
     std::vector<int> read_triangles_from_file(std::string name) {
         std::vector<int> faces;
-        std::string      line;
-        std::ifstream    elefile(name);
-        int              a1, a2, a3, a4;
+        std::string line;
+        std::ifstream elefile(name);
+        int a1, a2, a3, a4;
 
         //std::cout<<"Node file"<<std::endl;
         if(elefile.is_open()) {
@@ -119,9 +119,9 @@ private:
     //Read node file in .node format and nodes in point vector
     std::vector<int> read_neigh_from_file(std::string name) {
         std::vector<int> neighs;
-        std::string      line;
-        std::ifstream    neighfile(name);
-        int              a1, a2, a3, a4;
+        std::string line;
+        std::ifstream neighfile(name);
+        int a1, a2, a3, a4;
 
         //std::cout<<"Node file"<<std::endl;
         if(neighfile.is_open()) {
@@ -146,22 +146,22 @@ private:
     void construct_interior_halfEdges_from_faces_and_neighs(std::vector<int> faces, std::vector<int> neighs) {
         for(std::size_t i = 0; i < n_faces; i++) {
             HalfEdge he0, he1, he2;
-            int      index_he0 = i * 3 + 0;
-            int      index_he1 = i * 3 + 1;
-            int      index_he2 = i * 3 + 2;
-            int      v0        = faces.at(3 * i + 0);
-            int      v1        = faces.at(3 * i + 1);
-            int      v2        = faces.at(3 * i + 2);
-            int      n0        = neighs.at(3 * i + 0);
-            int      n1        = neighs.at(3 * i + 1);
-            int      n2        = neighs.at(3 * i + 2);
+            int index_he0 = i * 3 + 0;
+            int index_he1 = i * 3 + 1;
+            int index_he2 = i * 3 + 2;
+            int v0 = faces.at(3 * i + 0);
+            int v1 = faces.at(3 * i + 1);
+            int v2 = faces.at(3 * i + 2);
+            int n0 = neighs.at(3 * i + 0);
+            int n1 = neighs.at(3 * i + 1);
+            int n2 = neighs.at(3 * i + 2);
 
-            he0.origin                        = v0;
-            he0.target                        = v1;
-            he0.next                          = index_he1;
-            he0.prev                          = index_he2;
-            he0.face                          = i;
-            he0.is_border                     = (n2 == -1);
+            he0.origin = v0;
+            he0.target = v1;
+            he0.next = index_he1;
+            he0.prev = index_he2;
+            he0.face = i;
+            he0.is_border = (n2 == -1);
             Vertices.at(v0).incident_halfedge = index_he0;
             if(n2 != -1) {
                 for(std::size_t j = 0; j < 3; j++) {
@@ -175,11 +175,11 @@ private:
 
             HalfEdges.push_back(he0);
 
-            he1.origin    = v1;
-            he1.target    = v2;
-            he1.next      = index_he2;
-            he1.prev      = index_he0;
-            he1.face      = i;
+            he1.origin = v1;
+            he1.target = v2;
+            he1.next = index_he2;
+            he1.prev = index_he0;
+            he1.face = i;
             he1.is_border = (n0 == -1);
 
             Vertices.at(v1).incident_halfedge = index_he1;
@@ -196,12 +196,12 @@ private:
                 he1.twin = -1;
             HalfEdges.push_back(he1);
 
-            he2.origin                        = v2;
-            he2.target                        = v0;
-            he2.next                          = index_he0;
-            he2.prev                          = index_he1;
-            he2.face                          = i;
-            he2.is_border                     = (n1 == -1);
+            he2.origin = v2;
+            he2.target = v0;
+            he2.next = index_he0;
+            he2.prev = index_he1;
+            he2.face = i;
+            he2.is_border = (n1 == -1);
             Vertices.at(v2).incident_halfedge = index_he2;
 
             if(n1 != -1)
@@ -230,11 +230,11 @@ private:
         HalfEdge he_aux;
         for(std::size_t i = 0; i < this->n_halfedges; i++)
             if(HalfEdges.at(i).is_border) {
-                he_aux.target             = HalfEdges.at(i).origin;
-                he_aux.origin             = HalfEdges.at(i).target;
-                he_aux.is_border          = true;
+                he_aux.target = HalfEdges.at(i).origin;
+                he_aux.origin = HalfEdges.at(i).target;
+                he_aux.is_border = true;
                 HalfEdges.at(i).is_border = false;
-                he_aux.twin               = i;
+                he_aux.twin = i;
                 HalfEdges.push_back(he_aux);
                 HalfEdges.at(i).twin = HalfEdges.size() - 1;
             }
@@ -274,48 +274,48 @@ private:
                                                                           hash_for_pair); //set of edges to calculate the boundary and twin edges
         for(std::size_t i = 0; i < n_faces; i++) {
             HalfEdge he0, he1, he2;
-            int      index_he0 = i * 3 + 0;
-            int      index_he1 = i * 3 + 1;
-            int      index_he2 = i * 3 + 2;
-            int      v0        = faces.at(3 * i + 0);
-            int      v1        = faces.at(3 * i + 1);
-            int      v2        = faces.at(3 * i + 2);
+            int index_he0 = i * 3 + 0;
+            int index_he1 = i * 3 + 1;
+            int index_he2 = i * 3 + 2;
+            int v0 = faces.at(3 * i + 0);
+            int v1 = faces.at(3 * i + 1);
+            int v2 = faces.at(3 * i + 2);
 
-            he0.origin    = v0;
-            he0.target    = v1;
-            he0.next      = index_he1;
-            he0.prev      = index_he2;
-            he0.face      = i;
+            he0.origin = v0;
+            he0.target = v1;
+            he0.next = index_he1;
+            he0.prev = index_he2;
+            he0.face = i;
             he0.is_border = false;
-            he0.twin      = -1;
+            he0.twin = -1;
             //falta twin
             Vertices.at(v0).incident_halfedge = index_he0;
 
-            map_edges [std::make_pair(v0, v1)] = index_he0;
+            map_edges[std::make_pair(v0, v1)] = index_he0;
             HalfEdges.push_back(he0);
 
-            he1.origin                        = v1;
-            he1.target                        = v2;
-            he1.next                          = index_he2;
-            he1.prev                          = index_he0;
-            he1.face                          = i;
-            he1.is_border                     = false;
-            he1.twin                          = -1;
+            he1.origin = v1;
+            he1.target = v2;
+            he1.next = index_he2;
+            he1.prev = index_he0;
+            he1.face = i;
+            he1.is_border = false;
+            he1.twin = -1;
             Vertices.at(v1).incident_halfedge = index_he1;
 
-            map_edges [std::make_pair(v1, v2)] = index_he1;
+            map_edges[std::make_pair(v1, v2)] = index_he1;
             HalfEdges.push_back(he1);
 
-            he2.origin                        = v2;
-            he2.target                        = v0;
-            he2.next                          = index_he0;
-            he2.prev                          = index_he1;
-            he2.face                          = i;
-            he2.is_border                     = false;
-            he2.twin                          = -1;
+            he2.origin = v2;
+            he2.target = v0;
+            he2.next = index_he0;
+            he2.prev = index_he1;
+            he2.face = i;
+            he2.is_border = false;
+            he2.twin = -1;
             Vertices.at(v2).incident_halfedge = index_he2;
 
-            map_edges [std::make_pair(v2, v0)] = index_he2;
+            map_edges[std::make_pair(v2, v0)] = index_he2;
             HalfEdges.push_back(he2);
         }
         this->n_halfedges = HalfEdges.size();
@@ -326,14 +326,14 @@ private:
             //if halfedge has no twin
             if(HalfEdges.at(i).twin == -1) {
                 _edge twin = std::make_pair(HalfEdges.at(i).target, HalfEdges.at(i).origin);
-                it         = map_edges.find(twin);
+                it = map_edges.find(twin);
                 //if twin is found
                 if(it != map_edges.end()) {
-                    int index_twin                = it->second;
-                    HalfEdges.at(i).twin          = index_twin;
+                    int index_twin = it->second;
+                    HalfEdges.at(i).twin = index_twin;
                     HalfEdges.at(index_twin).twin = i;
                 } else { //if twin is not found and halfedge is on the boundary
-                    HalfEdges.at(i).is_border                     = true;
+                    HalfEdges.at(i).is_border = true;
                     Vertices.at(HalfEdges.at(i).origin).is_border = true;
                     Vertices.at(HalfEdges.at(i).target).is_border = true;
                 }
@@ -345,17 +345,17 @@ private:
     std::vector<int> read_OFFfile(std::string name) {
         //Read the OFF file
         std::vector<int> faces;
-        std::string      line;
-        std::ifstream    offfile(name);
-        double           a1, a2, a3;
-        std::string      tmp;
+        std::string line;
+        std::ifstream offfile(name);
+        double a1, a2, a3;
+        std::string tmp;
         if(offfile.is_open()) {
             //Check first line is a OFF file
             while(std::getline(offfile, line)) { //add check boundary vertices flag
                 std::istringstream(line) >> tmp;
-                if(tmp [0] != '#') //check if first element is a comentary
+                if(tmp[0] != '#') //check if first element is a comentary
                 {
-                    if(tmp [0] == 'O' && tmp [1] == 'F' && tmp [2] == 'F') //Check if the format is OFF
+                    if(tmp[0] == 'O' && tmp[1] == 'F' && tmp[2] == 'F') //Check if the format is OFF
                         break;
                     else {
                         std::cout << "The file is not an OFF file" << std::endl;
@@ -368,7 +368,7 @@ private:
 
             while(std::getline(offfile, line)) { //add check boundary vertices flag
                 std::istringstream(line) >> tmp;
-                if(tmp [0] != '#') //check if first element is a comentary
+                if(tmp[0] != '#') //check if first element is a comentary
                 {
                     std::istringstream(line) >> this->n_vertices >> this->n_faces;
                     this->Vertices.reserve(this->n_vertices);
@@ -381,7 +381,7 @@ private:
             int index = 0;
             while(index < n_vertices && std::getline(offfile, line)) {
                 std::istringstream(line) >> tmp;
-                if(tmp [0] != '#') //check if first element is a comentary
+                if(tmp[0] != '#') //check if first element is a comentary
                 {
                     std::istringstream(line) >> a1 >> a2 >> a3;
                     Vertex ve;
@@ -397,7 +397,7 @@ private:
             index = 0;
             while(index < n_faces && std::getline(offfile, line)) {
                 std::istringstream(line) >> tmp;
-                if(tmp [0] != '#') //check if first element is a comentary
+                if(tmp[0] != '#') //check if first element is a comentary
                 {
                     std::istringstream(line) >> lenght >> t1 >> t2 >> t3;
                     faces.push_back(t1);
@@ -457,10 +457,10 @@ public:
         file << n_vertices << "\n";
         file << n_halfedges << "\n";
         for(std::size_t i = 0; i < n_vertices; i++) {
-            Vertex v        = Vertices.at(i);
-            int    incident = v.incident_halfedge;
-            int    curr     = incident;
-            int    twin     = HalfEdges.at(curr).twin;
+            Vertex v = Vertices.at(i);
+            int incident = v.incident_halfedge;
+            int curr = incident;
+            int twin = HalfEdges.at(curr).twin;
             //search border edges with v as origin
             if(v.is_border) {
                 while(!HalfEdges.at(twin).is_border) {
@@ -495,14 +495,14 @@ public:
     //output: array with the vertices of the triangle
     _triangle incident_face(int e) {
         _triangle face;
-        int       nxt         = e;
-        int       init_vertex = origin(nxt);
-        int       curr_vertex = -1;
-        int       i           = 0;
+        int nxt = e;
+        int init_vertex = origin(nxt);
+        int curr_vertex = -1;
+        int i = 0;
         while(curr_vertex != init_vertex) {
-            nxt         = next(nxt);
+            nxt = next(nxt);
             curr_vertex = origin(nxt);
-            face.at(i)  = curr_vertex;
+            face.at(i) = curr_vertex;
             i++;
         }
         return face;
@@ -512,9 +512,9 @@ public:
     //Input: array with the vertices of the triangle
     //Output: true if the triangle is counterclockwise, false otherwise
     bool is_counterclockwise(_triangle tr) {
-        int    v0   = tr.at(0);
-        int    v1   = tr.at(1);
-        int    v2   = tr.at(2);
+        int v0 = tr.at(0);
+        int v1 = tr.at(1);
+        int v2 = tr.at(2);
         double area = 0.0;
         //int val = (p2.y - p1.y) * (p3.x - p2.x) - (p2.x - p1.x) * (p3.y - p2.y);
         area = (Vertices.at(v2).x - Vertices.at(v1).x) * (Vertices.at(v1).y - Vertices.at(v0).y)
