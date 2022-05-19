@@ -144,7 +144,7 @@ private:
     //Generate interior halfedges using faces and neigh vectors
     //also associate each vertex with an incident halfedge
     void construct_interior_halfEdges_from_faces_and_neighs(std::vector<int> faces, std::vector<int> neighs) {
-        for(std::size_t i = 0; i < n_faces; i++) {
+        for(int i = 0; i < n_faces; i++) {
             HalfEdge he0, he1, he2;
             int index_he0 = i * 3 + 0;
             int index_he1 = i * 3 + 1;
@@ -164,7 +164,7 @@ private:
             he0.is_border = (n2 == -1);
             Vertices.at(v0).incident_halfedge = index_he0;
             if(n2 != -1) {
-                for(std::size_t j = 0; j < 3; j++) {
+                for(int j = 0; j < 3; j++) {
                     if(faces.at(3 * n2 + j) == v1 && faces.at(3 * n2 + (j + 1) % 3) == v0) {
                         he0.twin = 3 * n2 + j;
                         break;
@@ -186,7 +186,7 @@ private:
 
 
             if(n0 != -1) {
-                for(std::size_t j = 0; j < 3; j++) {
+                for(int j = 0; j < 3; j++) {
                     if(faces.at(3 * n0 + j) == v2 && faces.at(3 * n0 + (j + 1) % 3) == v1) {
                         he1.twin = 3 * n0 + j;
                         break;
@@ -205,7 +205,7 @@ private:
             Vertices.at(v2).incident_halfedge = index_he2;
 
             if(n1 != -1)
-                for(std::size_t j = 0; j < 3; j++) {
+                for(int j = 0; j < 3; j++) {
                     if(faces.at(3 * n1 + j) == v0 && faces.at(3 * n1 + (j + 1) % 3) == v2) {
                         he2.twin = 3 * n1 + j;
                         break;
@@ -217,7 +217,7 @@ private:
             HalfEdges.push_back(he2);
         }
 
-        this->n_halfedges = HalfEdges.size();
+        this->n_halfedges = static_cast<int>(HalfEdges.size());
     }
 
     //Generate exterior halfedges
@@ -228,7 +228,7 @@ private:
         //search interior edges labed as border, generates exterior edges
         //with the origin and target inverted and add at the of HalfEdges vector
         HalfEdge he_aux;
-        for(std::size_t i = 0; i < this->n_halfedges; i++)
+        for(int i = 0; i < this->n_halfedges; i++)
             if(HalfEdges.at(i).is_border) {
                 he_aux.target = HalfEdges.at(i).origin;
                 he_aux.origin = HalfEdges.at(i).target;
@@ -236,22 +236,21 @@ private:
                 HalfEdges.at(i).is_border = false;
                 he_aux.twin = i;
                 HalfEdges.push_back(he_aux);
-                HalfEdges.at(i).twin = HalfEdges.size() - 1;
+                HalfEdges.at(i).twin = static_cast<int>(HalfEdges.size()) - 1;
             }
 
 
         //traverse the exterior edges and search their next prev halfedge
-        int v_origin, v_target;
-        for(std::size_t i = n_halfedges; i < HalfEdges.size(); i++) {
+        for(int i = n_halfedges; i < HalfEdges.size(); i++) {
             if(HalfEdges.at(i).is_border) {
                 //search prev of the halfedge
-                for(std::size_t j = n_halfedges; j < HalfEdges.size(); j++)
+                for(int j = n_halfedges; j < HalfEdges.size(); j++)
                     if(HalfEdges.at(j).origin == HalfEdges.at(i).target) {
                         HalfEdges.at(j).prev = i;
                         break;
                     }
                 //search next of each exterior edge
-                for(std::size_t j = n_halfedges; j < HalfEdges.size(); j++)
+                for(int j = n_halfedges; j < HalfEdges.size(); j++)
                     if(HalfEdges.at(i).target == HalfEdges.at(j).origin) {
                         HalfEdges.at(i).next = j;
                         break;
@@ -259,7 +258,7 @@ private:
             }
         }
 
-        this->n_halfedges = HalfEdges.size();
+        this->n_halfedges = static_cast<int>(HalfEdges.size());
     }
 
 
@@ -272,7 +271,7 @@ private:
         };
         std::unordered_map<_edge, int, decltype(hash_for_pair)> map_edges(3 * this->n_faces,
                                                                           hash_for_pair); //set of edges to calculate the boundary and twin edges
-        for(std::size_t i = 0; i < n_faces; i++) {
+        for(int i = 0; i < n_faces; i++) {
             HalfEdge he0, he1, he2;
             int index_he0 = i * 3 + 0;
             int index_he1 = i * 3 + 1;
@@ -318,11 +317,11 @@ private:
             map_edges[std::make_pair(v2, v0)] = index_he2;
             HalfEdges.push_back(he2);
         }
-        this->n_halfedges = HalfEdges.size();
+        this->n_halfedges = static_cast<int>(HalfEdges.size());
 
         //Calculate twin halfedge and boundary halfedges from set_edges
         std::unordered_map<_edge, int, decltype(hash_for_pair)>::iterator it;
-        for(std::size_t i = 0; i < HalfEdges.size(); i++) {
+        for(int i = 0; i < HalfEdges.size(); i++) {
             //if halfedge has no twin
             if(HalfEdges.at(i).twin == -1) {
                 _edge twin = std::make_pair(HalfEdges.at(i).target, HalfEdges.at(i).origin);
@@ -437,7 +436,7 @@ public:
         //std::cout<<"Constructing triangles"<<std::endl;
 
         triangle_list.reserve(n_faces);
-        for(std::size_t i = 0; i < n_faces; i++) triangle_list.push_back(3 * i);
+        for(int i = 0; i < n_faces; i++) triangle_list.push_back(3 * i);
     }
 
     Triangulation(std::string OFF_file) {
@@ -447,7 +446,7 @@ public:
         construct_exterior_halfEdges();
 
         triangle_list.reserve(n_faces);
-        for(std::size_t i = 0; i < n_faces; i++) triangle_list.push_back(3 * i);
+        for(int i = 0; i < n_faces; i++) triangle_list.push_back(3 * i);
     }
 
     //print the triangulation in pg file format
@@ -456,7 +455,7 @@ public:
         file.open(file_name);
         file << n_vertices << "\n";
         file << n_halfedges << "\n";
-        for(std::size_t i = 0; i < n_vertices; i++) {
+        for(int i = 0; i < n_vertices; i++) {
             Vertex v = Vertices.at(i);
             int incident = v.incident_halfedge;
             int curr = incident;
@@ -545,7 +544,7 @@ public:
     //Input: e is the edge
     //Output: the prev clockwise edge of v
     int CW_edge_to_vertex(int e) {
-        int twn, prv, nxt;
+        int twn, nxt;
         twn = HalfEdges.at(e).twin;
         nxt = HalfEdges.at(twn).next;
         return nxt;
