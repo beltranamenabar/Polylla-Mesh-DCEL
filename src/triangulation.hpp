@@ -52,6 +52,7 @@ TODO:
 class Triangulation {
 
 private:
+
     using triangle = std::array<int, 3>;
     int n_half_edges = 0; //number of half-edges
     int n_faces = 0; //number of faces
@@ -441,6 +442,23 @@ public:
         triangle_list.reserve(n_faces);
         for(int i = 0; i < n_faces; i++) triangle_list.push_back(3 * i);
     }
+
+    //Constructor from vectors
+    Triangulation(std::vector<Vertex> &vertices, std::vector<int> &triangles) {
+
+        this->n_vertices = static_cast<int>(vertices.size());
+        this->n_faces = static_cast<int>(triangles.size()) / 3;
+
+        this->vertices = vertices;
+        const std::vector<int> faces = triangles;
+
+        construct_interior_half_edges_from_faces(faces);
+        construct_exterior_half_edges();
+
+        triangle_list.reserve(n_faces);
+        for(int i = 0; i < n_faces; i++) triangle_list.push_back(3 * i);
+    }
+
 
     //print the triangulation in pg file format
     void print_pg(const std::string &file_name) const {
