@@ -13,7 +13,9 @@ int main(int argc, char **argv) {
         const auto neigh_file = std::string(argv[3]);
         output = std::string(argv[4]);
 
-        Polylla mesh(node_file, ele_file, neigh_file);
+        Triangulation tr(node_file, ele_file, neigh_file);
+        Polylla mesh(tr);
+        mesh.construct_polylla();
 
         mesh.print_OFF(output + ".off");
         std::cout << "output off in " << output << ".off" << std::endl;
@@ -24,7 +26,9 @@ int main(int argc, char **argv) {
         const auto off_file = std::string(argv[1]);
         output = std::string(argv[2]);
 
-        Polylla mesh(off_file);
+        Triangulation tr(off_file);
+        Polylla mesh(tr);
+        mesh.construct_polylla();
 
         mesh.print_OFF(output + ".off");
         std::cout << "output off in " << output << ".off" << std::endl;

@@ -22,6 +22,7 @@
 
 class Polylla {
 private:
+
     using polygon = std::vector<int>;
     using bit_vector = std::vector<bool>;
 
@@ -40,6 +41,12 @@ private:
     int n_barrier_edge_tips = 0; // Number of barrier edge tips
 
 public:
+
+    Polylla(const Triangulation &tr) {
+
+        this->tr = new Triangulation(tr);
+    }
+
     //Constructor from a OFF file
     Polylla(const std::string &off_file) {
 
@@ -123,8 +130,8 @@ public:
 
         this->m_polygons = static_cast<int>(polygonal_mesh.size());
 
-        std::cout << "Mesh with " << m_polygons << " polygons " << n_frontier_edges / 2 <<
-        " edges and " << n_barrier_edge_tips << " barrier-edge tips." << std::endl;
+        std::cout << "Mesh with " << m_polygons << " polygons " << n_frontier_edges / 2 << " edges and "
+                  << n_barrier_edge_tips << " barrier-edge tips." << std::endl;
     }
 
     //function whose input is a vector and print the elements of the vector
@@ -263,6 +270,7 @@ public:
 
 
 private:
+
     //Return true is the edge is terminal-edge or terminal border edge,
     //but it only selects one half-edge as terminal-edge, the half-edge with lowest index is selected
     bool is_seed_edge(const int e) const {
