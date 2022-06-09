@@ -249,6 +249,11 @@ public:
         file.close();
     }
 
+    std::vector<Polygon> get_polygonal_mesh() const {
+        return this->polygonal_mesh;
+    }
+
+
     //Return a polygon generated from a seed edge
     polygon generate_polygon(const int e) const {
         polygon poly;
